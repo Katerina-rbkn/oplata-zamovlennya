@@ -1,0 +1,1369 @@
+
+/* =====================================================
+   USE-CASE 3 — ОПЛАТА ЗАМОВЛЕННЯ
+   Сервіс виклику побутових майстрів
+   ===================================================== */
+
+/* Кольорова палітра */
+
+:root {
+    --accent: #D2691E;
+    --accent-dark: #B5571A;
+    --light: #B0C4DE;
+    --dark: #2F4858;
+    --frame: #1E2D37;
+    --bg: #F5F8FC;
+    --card: #FFFFFF;
+    --text: #1F2937;
+    --muted: #6B7280;
+    --line: #DCE4EE;
+    --green: #2E9D5B;
+    --red: #D93025;
+}
+
+/* Загальні налаштування */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: "Montserrat", "Segoe UI", Arial, sans-serif;
+    background: #E9EEF4;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        transform 0.15s,
+        box-shadow 0.2s,
+        border-color 0.2s;
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--light);
+    outline-offset: 2px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   ГОЛОВНИЙ МАКЕТ
+   ===================================================== */
+
+.stage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 68px;
+    padding: 30px 22px;
+}
+
+/* =====================================================
+   ЛІВА ПАНЕЛЬ USE-CASE
+   ===================================================== */
+
+.panel {
+    width: 320px;
+    flex-shrink: 0;
+}
+
+.panel-kicker {
+    margin: 0 0 14px;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.09em;
+    color: #7A8796;
+}
+
+.panel h1 {
+    margin: 0 0 12px;
+    color: var(--dark);
+    font-size: 29px;
+    line-height: 1.22;
+    letter-spacing: -0.6px;
+}
+
+.case-label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 750;
+    letter-spacing: 0;
+}
+
+.panel-text {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+/* Кнопка переходу за сценарієм */
+
+.panel-actions {
+    margin: 18px 0 22px;
+}
+
+.next-button {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 16px 0 19px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 0;
+    border-radius: 999px;
+    background: var(--dark);
+    color: white;
+    font-size: 13px;
+    font-weight: 750;
+    box-shadow: 0 7px 18px rgba(47, 72, 88, 0.17);
+}
+
+.next-button:hover {
+    background: #233A49;
+    box-shadow: 0 10px 20px rgba(47, 72, 88, 0.23);
+}
+
+.next-button span:last-child {
+    font-size: 21px;
+    line-height: 1;
+}
+
+/* Заголовки сценаріїв */
+
+.panel-group {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 15px 0 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.055em;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.panel-group.alternate {
+    margin-top: 17px;
+}
+
+.group-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+.alternate .group-dot {
+    background: var(--light);
+}
+
+/* Список екранів */
+
+.screens {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.screens li {
+    margin: 0;
+    padding: 0;
+    border: 1.5px solid transparent;
+    border-radius: 11px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(30, 45, 55, 0.035);
+}
+
+.screens li:hover {
+    border-color: var(--light);
+}
+
+.screens li.current {
+    border-color: var(--dark);
+}
+
+.step-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    font-size: 12px;
+    font-weight: 550;
+    line-height: 1.2;
+}
+
+.step-button b {
+    display: grid;
+    place-items: center;
+    flex: 0 0 29px;
+    height: 25px;
+    border-radius: 9px;
+    background: #E6EDF6;
+    color: var(--dark);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.screens li.current .step-button {
+    color: var(--dark);
+    font-weight: 750;
+}
+
+.screens li.current .step-button b {
+    background: var(--accent);
+    color: white;
+}
+
+.step-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Почати спочатку */
+
+.restart-button {
+    width: 100%;
+    min-height: 43px;
+    margin-top: 18px;
+    border: 1.5px solid var(--dark);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--dark);
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.restart-button:hover {
+    background: var(--dark);
+    color: white;
+}
+
+.panel-note {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =====================================================
+   ТЕЛЕФОН КЛІЄНТА
+   ===================================================== */
+
+.device-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.role-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border-radius: 999px;
+    background: var(--light);
+    color: var(--dark);
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.role-chip-icon {
+    font-size: 17px;
+    line-height: 1;
+}
+
+/* Компактний телефон */
+
+.phone {
+    position: relative;
+    width: 356px;
+    height: 752px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 39px;
+    background: var(--bg);
+
+    box-shadow:
+        0 0 0 9px var(--frame),
+        0 25px 65px rgba(30, 45, 55, 0.27);
+}
+
+/* =====================================================
+   СТАТУС-БАР ТЕЛЕФОНА
+   ===================================================== */
+
+.statusbar {
+    height: 42px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 24px 0 27px;
+    background: var(--dark);
+    color: white;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.sb-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sb-icons svg {
+    display: block;
+    width: auto;
+    height: 11px;
+    fill: currentColor;
+}
+
+/* =====================================================
+   ЕКРАНИ ЗАСТОСУНКУ
+   ===================================================== */
+
+.screen {
+    display: none;
+    flex-direction: column;
+    height: calc(100% - 42px);
+    background: var(--bg);
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Верхня панель */
+
+.appbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 60px;
+    padding: 13px 18px;
+    background: var(--dark);
+    color: white;
+}
+
+.appbar h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 750;
+    letter-spacing: -0.2px;
+}
+
+.payment-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.payment-header h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.back-button {
+    display: grid;
+    place-items: center;
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: white;
+    font-size: 24px;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Контент екрана */
+
+.content {
+    flex: 1;
+    min-height: 0;
+    padding: 16px 17px 22px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #D7DFEA transparent;
+}
+
+.content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.content::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #D7DFEA;
+}
+
+/* =====================================================
+   КАРТКИ
+   ===================================================== */
+
+.card {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    background: var(--card);
+    box-shadow: 0 5px 20px rgba(30, 45, 55, 0.06);
+}
+
+.card h3 {
+    margin: 8px 0 10px;
+    color: var(--dark);
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.card p {
+    font-size: 12.5px;
+    line-height: 1.55;
+}
+
+.order-number {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.status,
+.paid-status {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.price {
+    margin: 14px 0 17px;
+    color: var(--dark);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* =====================================================
+   ОСНОВНІ КНОПКИ
+   ===================================================== */
+
+.btn-primary,
+.btn-outline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 750;
+    letter-spacing: 0.01em;
+    text-align: center;
+}
+
+/* Помаранчева кнопка */
+
+.btn-primary {
+    border: 0;
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 5px 13px rgba(210, 105, 30, 0.17);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--accent-dark);
+    box-shadow: 0 7px 16px rgba(210, 105, 30, 0.22);
+}
+
+/* Контурна кнопка */
+
+.btn-outline {
+    border: 1.6px solid var(--dark);
+    background: white;
+    color: var(--dark);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: #EDF3F9;
+}
+
+/* Неактивні кнопки */
+
+.btn-primary:disabled,
+.btn-outline:disabled {
+    border-color: #D7DFE8;
+    background: #D7DFE8;
+    color: #8793A1;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* =====================================================
+   ВКЛАДКИ ЗАМОВЛЕНЬ
+   ===================================================== */
+
+.tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 17px;
+    padding: 4px;
+    border-radius: 13px;
+    background: #E5ECF5;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 10px 4px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.tabs .selected {
+    background: white;
+    color: var(--dark);
+    box-shadow: 0 2px 7px rgba(47, 72, 88, 0.10);
+}
+
+/* Нижня навігація */
+
+.tabbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-shrink: 0;
+    height: 69px;
+    padding: 9px 10px 7px;
+    background: var(--dark);
+    color: var(--light);
+}
+
+.tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 650;
+}
+
+.tab-symbol {
+    font-size: 21px;
+    line-height: 1.1;
+}
+
+.active-tab {
+    color: white;
+}
+
+.active-tab .tab-symbol {
+    color: #F6AE71;
+}
+
+/* =====================================================
+   ДЕТАЛІ ОПЛАТИ
+   ===================================================== */
+
+.payment-card {
+    margin-bottom: 11px;
+}
+
+.payment-card h3 {
+    margin-top: 10px;
+}
+
+.payment-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.completed-badge {
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #EAF6EF;
+    color: var(--green);
+    font-size: 10px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.payment-card hr,
+.result-card hr {
+    margin: 16px 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+}
+
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+    font-size: 12px;
+}
+
+.payment-row strong {
+    color: var(--dark);
+    text-align: right;
+}
+
+.total-price {
+    margin: 10px 0;
+    color: var(--dark);
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.payment-note,
+.promo-hint {
+    color: var(--muted);
+    font-size: 12px !important;
+    line-height: 1.5;
+}
+
+.payment-footer {
+    flex-shrink: 0;
+    padding: 11px 17px 18px;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+}
+
+/* =====================================================
+   ПРОМОКОД
+   ===================================================== */
+
+.promo-input {
+    width: 100%;
+    margin: 7px 0 10px;
+    padding: 13px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: white;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.promo-input::placeholder {
+    color: #9CA3AF;
+}
+
+.promo-message {
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.promo-message:empty {
+    display: none;
+}
+
+.promo-message.success {
+    color: var(--green);
+}
+
+.promo-message.error {
+    color: var(--red);
+}
+
+/* =====================================================
+   LIQPAY — ДЕМОНСТРАЦІЙНИЙ ВІДЖЕТ
+   ===================================================== */
+
+.widget-order-card {
+    margin-bottom: 12px;
+}
+
+.widget-order-card h3 {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.widget-order-card p {
+    margin: 6px 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.liqpay-widget {
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 5px 18px rgba(47, 72, 88, 0.07);
+}
+
+.widget-header {
+    padding: 17px 14px 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+}
+
+.liqpay-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: var(--dark);
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.liqpay-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--green);
+    color: white;
+    font-size: 20px;
+}
+
+.widget-subtitle {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.widget-body {
+    padding: 17px 16px 19px;
+}
+
+.widget-label {
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+}
+
+.widget-amount {
+    margin: 0 0 17px;
+    color: var(--dark);
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.widget-divider {
+    height: 1px;
+    margin-bottom: 20px;
+    background: var(--line);
+}
+
+.widget-body h3 {
+    margin: 0 0 14px;
+    color: var(--dark);
+    font-size: 14px;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 19px;
+    padding: 15px 12px;
+    border: 1px solid var(--light);
+    border-radius: 12px;
+    background: var(--bg);
+}
+
+.payment-method-icon {
+    color: var(--dark);
+    font-size: 26px;
+}
+
+.payment-method-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.payment-method-info strong {
+    font-size: 13px;
+}
+
+.payment-method-info small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.method-selected {
+    color: var(--green);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.widget-pay-button {
+    min-height: 47px;
+    font-size: 12px;
+}
+
+.widget-security {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.widget-cancel {
+    min-height: 43px;
+    margin-bottom: 20px;
+}
+
+/* =====================================================
+   РЕЗУЛЬТАТИ ОПЛАТИ
+   ===================================================== */
+
+.result-card {
+    margin-bottom: 13px;
+    padding: 20px 16px;
+    text-align: center;
+}
+
+.result-card h3 {
+    margin: 16px 0 12px;
+    color: var(--dark);
+    font-size: 19px;
+}
+
+.result-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.result-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 50%;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.processing-icon {
+    background: #E6EDF6;
+    color: var(--dark);
+}
+
+.success-icon {
+    background: #EAF6EF;
+    color: var(--green);
+}
+
+.declined-icon {
+    background: #FCEAE8;
+    color: var(--red);
+}
+
+.pending-icon {
+    background: #FFF3DE;
+    color: #B87516;
+}
+
+.result-amount {
+    margin: 17px 0;
+    color: var(--dark);
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.success-text {
+    color: var(--green) !important;
+}
+
+.result-button {
+    min-height: 46px;
+    margin-bottom: 10px;
+}
+
+/* Демонстраційні результати */
+
+.demo-card {
+    margin-top: 13px;
+}
+
+.demo-card h3 {
+    color: var(--dark);
+    font-size: 16px;
+}
+
+.demo-card p {
+    margin-bottom: 18px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.demo-button {
+    min-height: 43px;
+    margin-bottom: 9px;
+}
+
+/* Очікування підтвердження */
+
+.pending-notice {
+    margin-top: 18px;
+    padding: 14px;
+    border: 1px solid #F3DFC2;
+    border-radius: 10px;
+    background: #FFF3DE;
+    color: #946014;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* =====================================================
+   ПУСТІ СПИСКИ ЗАМОВЛЕНЬ
+   ===================================================== */
+
+.orders-empty {
+    padding: 35px 20px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: white;
+    text-align: center;
+}
+
+.empty-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #E6EDF6;
+    color: var(--dark);
+    font-size: 30px;
+}
+
+.orders-empty h3 {
+    margin: 0 0 12px;
+    color: var(--dark);
+    font-size: 17px;
+    line-height: 1.4;
+}
+
+.orders-empty p {
+    margin-bottom: 20px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* =====================================================
+   ОПЛАЧЕНЕ ЗАМОВЛЕННЯ
+   ===================================================== */
+
+.paid-order-card {
+    border-color: #CBE7D4;
+}
+
+.paid-price-label {
+    margin: 20px 0 4px;
+    color: var(--muted);
+    font-size: 12px !important;
+}
+
+.paid-order-card .price {
+    margin: 8px 0 20px;
+}
+
+.receipt-order-button {
+    margin-top: 10px;
+}
+
+/* Збережена оцінка майстра */
+
+.saved-review {
+    margin: 0 0 14px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #FFF8ED;
+    color: var(--dark);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.saved-review-title {
+    margin-bottom: 4px;
+    color: var(--dark);
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.saved-review-stars {
+    color: #E8A12B;
+    font-size: 23px;
+    letter-spacing: 2px;
+}
+
+.saved-review-comment {
+    margin: 8px 0 0;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   ОЦІНЮВАННЯ МАЙСТРА
+   ===================================================== */
+
+.review-card {
+    margin-bottom: 13px;
+    border-color: #E8C79E;
+}
+
+.review-card h3 {
+    margin: 0 0 8px;
+    color: var(--dark);
+    font-size: 16px;
+}
+
+.review-card > p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Зірочки */
+
+.rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    margin: 11px 0 4px;
+}
+
+.star-button {
+    padding: 3px;
+    border: 0;
+    background: transparent;
+    color: #CBD5E1;
+    font-size: 35px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        color 0.15s,
+        transform 0.15s;
+}
+
+.star-button.selected {
+    color: #F3AE36;
+}
+
+.star-button:hover {
+    transform: scale(1.1);
+}
+
+.star-button:focus-visible {
+    border-radius: 6px;
+    outline: 2px solid var(--accent);
+}
+
+.rating-hint {
+    min-height: 18px;
+    margin: 5px 0 18px;
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+}
+
+.rating-hint.saved {
+    color: var(--green);
+    font-weight: 600;
+}
+
+/* Коментар */
+
+.review-label {
+    display: block;
+    margin-bottom: 9px;
+    color: var(--dark);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.review-comment {
+    width: 100%;
+    min-height: 78px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: white;
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.review-comment::placeholder {
+    color: #9CA3AF;
+}
+
+.review-message {
+    color: var(--red) !important;
+    font-size: 12px !important;
+}
+
+.review-message:empty {
+    display: none;
+}
+
+.review-card .btn-primary {
+    margin-top: 14px;
+}
+
+/* Підтвердження коментаря */
+
+.review-saved-card {
+    margin-bottom: 13px;
+    text-align: center;
+}
+
+.review-saved-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: #EAF6EF;
+    color: var(--green);
+    font-size: 26px;
+}
+
+.review-saved-card h3 {
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+.review-saved-card p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   КВИТАНЦІЯ
+   ===================================================== */
+
+.receipt-card {
+    margin-bottom: 16px;
+    padding: 19px 15px;
+    text-align: center;
+}
+
+.receipt-mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: #EAF6EF;
+    color: var(--green);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.receipt-kicker {
+    color: #B87516;
+    font-size: 10px !important;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.receipt-card h3 {
+    margin: 8px 0;
+    font-size: 18px;
+}
+
+.receipt-subtitle {
+    color: var(--muted);
+    font-size: 12px !important;
+    line-height: 1.4;
+}
+
+.receipt-big-amount {
+    margin: 18px 0;
+    color: var(--dark);
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.receipt-separator {
+    margin: 18px 0;
+    border-top: 1px dashed #CBD5E1;
+}
+
+.receipt-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 13px 0;
+    font-size: 11px;
+    text-align: left;
+}
+
+.receipt-line span {
+    flex: 0 0 42%;
+    color: var(--muted);
+}
+
+.receipt-line strong {
+    color: var(--dark);
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.receipt-disclaimer {
+    margin: 22px 0 0;
+    padding: 12px;
+    border-radius: 9px;
+    background: #FFF8ED;
+    color: #946014;
+    font-size: 11px !important;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* Квитанція для друку */
+
+.print-receipt {
+    display: none;
+}
+
+/* =====================================================
+   АДАПТИВНІСТЬ
+   ===================================================== */
+
+@media (max-width: 780px) {
+
+    .stage {
+        flex-direction: column;
+        gap: 32px;
+        padding: 24px 12px 40px;
+    }
+
+    .panel {
+        width: min(100%, 356px);
+    }
+
+    .device-wrap {
+        width: 100%;
+    }
+
+    .phone {
+        width: min(356px, calc(100vw - 42px));
+        height: min(752px, 82vh);
+        min-height: 560px;
+    }
+}
+
+/* =====================================================
+   ДРУК КВИТАНЦІЇ
+   ===================================================== */
+
+@media print {
+
+    @page {
+        size: A4;
+        margin: 20mm;
+    }
+
+    body {
+        background: white;
+        font-family: Arial, sans-serif;
+    }
+
+    .stage {
+        display: none !important;
+    }
+
+    .print-receipt {
+        display: block !important;
+        max-width: 170mm;
+        margin: 0 auto;
+        color: #222;
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+
+    .print-receipt h1 {
+        margin-bottom: 4mm;
+        font-size: 22pt;
+    }
+
+    .print-receipt hr {
+        margin: 7mm 0;
+        border: 0;
+        border-top: 1px solid #AAA;
+    }
+
+    .print-receipt p {
+        margin: 3mm 0;
+    }
+
+    .print-disclaimer {
+        margin-top: 10mm !important;
+        color: #555;
+        font-size: 10pt;
+    }
+}
