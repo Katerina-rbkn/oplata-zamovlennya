@@ -1,7 +1,7 @@
 
 /* =====================================================
    USE-CASE 3 — ОПЛАТА ЗАМОВЛЕННЯ
-   Сервіс виклику побутових майстрів
+   Узгоджений дизайн зі спільним застосунком
    ===================================================== */
 
 /* Кольорова палітра */
@@ -21,7 +21,9 @@
     --red: #D93025;
 }
 
-/* Загальні налаштування */
+/* =====================================================
+   ЗАГАЛЬНІ СТИЛІ
+   ===================================================== */
 
 * {
     box-sizing: border-box;
@@ -43,7 +45,7 @@ body {
 button,
 input,
 textarea {
-    font: inherit;
+    font-family: inherit;
 }
 
 button {
@@ -52,8 +54,7 @@ button {
         background 0.2s,
         color 0.2s,
         transform 0.15s,
-        box-shadow 0.2s,
-        border-color 0.2s;
+        box-shadow 0.2s;
 }
 
 button:active:not(:disabled) {
@@ -95,10 +96,10 @@ textarea:focus-visible {
 
 .panel-kicker {
     margin: 0 0 14px;
-    font-size: 11px;
-    font-weight: 750;
-    letter-spacing: 0.09em;
     color: #7A8796;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
 }
 
 .panel h1 {
@@ -114,8 +115,7 @@ textarea:focus-visible {
     margin-bottom: 5px;
     color: var(--accent);
     font-size: 15px;
-    font-weight: 750;
-    letter-spacing: 0;
+    font-weight: 700;
 }
 
 .panel-text {
@@ -132,29 +132,27 @@ textarea:focus-visible {
 }
 
 .next-button {
-    width: 100%;
-    min-height: 46px;
-    padding: 0 16px 0 19px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 0;
+    width: 100%;
+    min-height: 46px;
+    padding: 0 16px 0 19px;
+    border: none;
     border-radius: 999px;
     background: var(--dark);
     color: white;
     font-size: 13px;
-    font-weight: 750;
+    font-weight: 700;
     box-shadow: 0 7px 18px rgba(47, 72, 88, 0.17);
 }
 
 .next-button:hover {
     background: #233A49;
-    box-shadow: 0 10px 20px rgba(47, 72, 88, 0.23);
 }
 
 .next-button span:last-child {
     font-size: 21px;
-    line-height: 1;
 }
 
 /* Заголовки сценаріїв */
@@ -205,12 +203,12 @@ textarea:focus-visible {
     box-shadow: 0 2px 5px rgba(30, 45, 55, 0.035);
 }
 
-.screens li:hover {
-    border-color: var(--light);
-}
-
 .screens li.current {
     border-color: var(--dark);
+}
+
+.screens li:hover {
+    border-color: var(--light);
 }
 
 .step-button {
@@ -219,14 +217,13 @@ textarea:focus-visible {
     gap: 10px;
     width: 100%;
     padding: 7px 10px;
-    border: 0;
+    border: none;
     border-radius: 11px;
     background: transparent;
     color: var(--text);
     text-align: left;
     font-size: 12px;
-    font-weight: 550;
-    line-height: 1.2;
+    font-weight: 500;
 }
 
 .step-button b {
@@ -243,7 +240,7 @@ textarea:focus-visible {
 
 .screens li.current .step-button {
     color: var(--dark);
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .screens li.current .step-button b {
@@ -267,7 +264,7 @@ textarea:focus-visible {
     background: transparent;
     color: var(--dark);
     font-size: 13px;
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .restart-button:hover {
@@ -283,7 +280,7 @@ textarea:focus-visible {
 }
 
 /* =====================================================
-   ТЕЛЕФОН КЛІЄНТА
+   ТЕЛЕФОН
    ===================================================== */
 
 .device-wrap {
@@ -302,15 +299,12 @@ textarea:focus-visible {
     background: var(--light);
     color: var(--dark);
     font-size: 12px;
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .role-chip-icon {
     font-size: 17px;
-    line-height: 1;
 }
-
-/* Компактний телефон */
 
 .phone {
     position: relative;
@@ -327,19 +321,19 @@ textarea:focus-visible {
 }
 
 /* =====================================================
-   СТАТУС-БАР ТЕЛЕФОНА
+   СТАТУС-БАР
    ===================================================== */
 
 .statusbar {
-    height: 42px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    height: 42px;
     padding: 8px 24px 0 27px;
     background: var(--dark);
     color: white;
     font-size: 13px;
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .sb-icons {
@@ -356,7 +350,7 @@ textarea:focus-visible {
 }
 
 /* =====================================================
-   ЕКРАНИ ЗАСТОСУНКУ
+   ЕКРАНИ
    ===================================================== */
 
 .screen {
@@ -385,18 +379,10 @@ textarea:focus-visible {
 .appbar h2 {
     margin: 0;
     font-size: 18px;
-    font-weight: 750;
-    letter-spacing: -0.2px;
-}
-
-.payment-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    font-weight: 700;
 }
 
 .payment-header h2 {
-    margin: 0;
     font-size: 17px;
 }
 
@@ -407,7 +393,7 @@ textarea:focus-visible {
     width: 30px;
     height: 30px;
     padding: 0;
-    border: 0;
+    border: none;
     border-radius: 50%;
     background: transparent;
     color: white;
@@ -418,7 +404,7 @@ textarea:focus-visible {
     background: rgba(255, 255, 255, 0.12);
 }
 
-/* Контент екрана */
+/* Контент */
 
 .content {
     flex: 1;
@@ -429,24 +415,59 @@ textarea:focus-visible {
     scrollbar-color: #D7DFEA transparent;
 }
 
-.content::-webkit-scrollbar {
-    width: 5px;
+/* =====================================================
+   ВКЛАДКИ ЗАМОВЛЕНЬ
+   ДИЗАЙН ЯК У ДІВЧАТ
+   ===================================================== */
+
+#orders .tabs {
+    display: flex;
+    gap: 0;
+    margin: -16px -17px 17px;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: white;
 }
 
-.content::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background: #D7DFEA;
+#orders .tabs button {
+    flex: 1;
+    min-height: 49px;
+    padding: 15px 2px 12px;
+
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+
+    background: white;
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: none;
+}
+
+#orders .tabs button.selected {
+    border-bottom-color: var(--accent);
+    background: white;
+    color: var(--text);
+    font-weight: 700;
+}
+
+#orders .tabs button:hover:not(.selected) {
+    color: var(--dark);
 }
 
 /* =====================================================
-   КАРТКИ
+   КАРТКИ ЗАМОВЛЕНЬ
    ===================================================== */
 
 .card {
     padding: 16px;
     border: 1px solid var(--line);
     border-radius: 15px;
-    background: var(--card);
+    background: white;
     box-shadow: 0 5px 20px rgba(30, 45, 55, 0.06);
 }
 
@@ -454,11 +475,12 @@ textarea:focus-visible {
     margin: 8px 0 10px;
     color: var(--dark);
     font-size: 16px;
+    font-weight: 700;
     line-height: 1.3;
 }
 
 .card p {
-    font-size: 12.5px;
+    font-size: 13px;
     line-height: 1.55;
 }
 
@@ -470,18 +492,18 @@ textarea:focus-visible {
 .status,
 .paid-status {
     color: var(--green);
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .price {
     margin: 14px 0 17px;
     color: var(--dark);
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 /* =====================================================
-   ОСНОВНІ КНОПКИ
+   КНОПКИ
    ===================================================== */
 
 .btn-primary,
@@ -494,15 +516,12 @@ textarea:focus-visible {
     padding: 11px 14px;
     border-radius: 999px;
     font-size: 13px;
-    font-weight: 750;
-    letter-spacing: 0.01em;
+    font-weight: 700;
     text-align: center;
 }
 
-/* Помаранчева кнопка */
-
 .btn-primary {
-    border: 0;
+    border: none;
     background: var(--accent);
     color: white;
     box-shadow: 0 5px 13px rgba(210, 105, 30, 0.17);
@@ -510,10 +529,7 @@ textarea:focus-visible {
 
 .btn-primary:hover:not(:disabled) {
     background: var(--accent-dark);
-    box-shadow: 0 7px 16px rgba(210, 105, 30, 0.22);
 }
-
-/* Контурна кнопка */
 
 .btn-outline {
     border: 1.6px solid var(--dark);
@@ -525,8 +541,6 @@ textarea:focus-visible {
     background: #EDF3F9;
 }
 
-/* Неактивні кнопки */
-
 .btn-primary:disabled,
 .btn-outline:disabled {
     border-color: #D7DFE8;
@@ -537,68 +551,57 @@ textarea:focus-visible {
 }
 
 /* =====================================================
-   ВКЛАДКИ ЗАМОВЛЕНЬ
+   НИЖНЯ НАВІГАЦІЯ
+   ІКОНКИ ЯК У ДІВЧАТ
    ===================================================== */
 
-.tabs {
-    display: flex;
-    gap: 2px;
-    margin-bottom: 17px;
-    padding: 4px;
-    border-radius: 13px;
-    background: #E5ECF5;
-}
-
-.tabs button {
-    flex: 1;
-    padding: 10px 4px;
-    border: 0;
-    border-radius: 10px;
-    background: transparent;
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 650;
-}
-
-.tabs .selected {
-    background: white;
-    color: var(--dark);
-    box-shadow: 0 2px 7px rgba(47, 72, 88, 0.10);
-}
-
-/* Нижня навігація */
-
-.tabbar {
+#orders .tabbar {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
     flex-shrink: 0;
-    height: 69px;
-    padding: 9px 10px 7px;
+
+    height: 78px;
+    padding: 12px 8px 8px;
+
     background: var(--dark);
-    color: var(--light);
-}
-
-.tab-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    font-size: 10px;
-    font-weight: 650;
-}
-
-.tab-symbol {
-    font-size: 21px;
-    line-height: 1.1;
-}
-
-.active-tab {
     color: white;
 }
 
-.active-tab .tab-symbol {
-    color: #F6AE71;
+#orders .tab-item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Активна вкладка — помаранчева */
+
+#orders .tab-item.active-tab {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* Контурні SVG-іконки */
+
+#orders .nav-icon {
+    display: block;
+    flex: none;
+    width: 24px;
+    height: 24px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 /* =====================================================
@@ -609,14 +612,10 @@ textarea:focus-visible {
     margin-bottom: 11px;
 }
 
-.payment-card h3 {
-    margin-top: 10px;
-}
-
 .payment-top {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     gap: 8px;
 }
 
@@ -626,21 +625,20 @@ textarea:focus-visible {
     background: #EAF6EF;
     color: var(--green);
     font-size: 10px;
-    font-weight: bold;
-    white-space: nowrap;
+    font-weight: 700;
 }
 
 .payment-card hr,
 .result-card hr {
     margin: 16px 0;
-    border: 0;
+    border: none;
     border-top: 1px solid var(--line);
 }
 
 .payment-row {
     display: flex;
-    justify-content: space-between;
     align-items: baseline;
+    justify-content: space-between;
     gap: 10px;
     margin-top: 12px;
     font-size: 12px;
@@ -655,7 +653,7 @@ textarea:focus-visible {
     margin: 10px 0;
     color: var(--dark);
     font-size: 25px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .payment-note,
@@ -711,7 +709,7 @@ textarea:focus-visible {
 }
 
 /* =====================================================
-   LIQPAY — ДЕМОНСТРАЦІЙНИЙ ВІДЖЕТ
+   LIQPAY
    ===================================================== */
 
 .widget-order-card {
@@ -719,7 +717,6 @@ textarea:focus-visible {
 }
 
 .widget-order-card h3 {
-    margin: 8px 0;
     font-size: 16px;
 }
 
@@ -746,18 +743,18 @@ textarea:focus-visible {
 
 .liqpay-logo {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     color: var(--dark);
     font-size: 23px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .liqpay-icon {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 34px;
     height: 34px;
     border-radius: 50%;
@@ -787,7 +784,7 @@ textarea:focus-visible {
     margin: 0 0 17px;
     color: var(--dark);
     font-size: 30px;
-    font-weight: bold;
+    font-weight: 700;
     text-align: center;
 }
 
@@ -838,7 +835,7 @@ textarea:focus-visible {
 .method-selected {
     color: var(--green);
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .widget-pay-button {
@@ -883,14 +880,14 @@ textarea:focus-visible {
 
 .result-icon {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 64px;
     height: 64px;
     margin: 0 auto;
     border-radius: 50%;
     font-size: 34px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .processing-icon {
@@ -917,7 +914,7 @@ textarea:focus-visible {
     margin: 17px 0;
     color: var(--dark);
     font-size: 26px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .success-text {
@@ -929,14 +926,11 @@ textarea:focus-visible {
     margin-bottom: 10px;
 }
 
-/* Демонстраційні результати */
-
 .demo-card {
     margin-top: 13px;
 }
 
 .demo-card h3 {
-    color: var(--dark);
     font-size: 16px;
 }
 
@@ -951,8 +945,6 @@ textarea:focus-visible {
     min-height: 43px;
     margin-bottom: 9px;
 }
-
-/* Очікування підтвердження */
 
 .pending-notice {
     margin-top: 18px;
@@ -980,8 +972,8 @@ textarea:focus-visible {
 
 .empty-icon {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 65px;
     height: 65px;
     margin: 0 auto 18px;
@@ -1027,8 +1019,6 @@ textarea:focus-visible {
     margin-top: 10px;
 }
 
-/* Збережена оцінка майстра */
-
 .saved-review {
     margin: 0 0 14px;
     padding: 12px;
@@ -1041,9 +1031,8 @@ textarea:focus-visible {
 
 .saved-review-title {
     margin-bottom: 4px;
-    color: var(--dark);
     font-size: 11px;
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .saved-review-stars {
@@ -1069,7 +1058,6 @@ textarea:focus-visible {
 
 .review-card h3 {
     margin: 0 0 8px;
-    color: var(--dark);
     font-size: 16px;
 }
 
@@ -1078,8 +1066,6 @@ textarea:focus-visible {
     font-size: 12px;
     line-height: 1.5;
 }
-
-/* Зірочки */
 
 .rating-stars {
     display: flex;
@@ -1090,15 +1076,11 @@ textarea:focus-visible {
 
 .star-button {
     padding: 3px;
-    border: 0;
+    border: none;
     background: transparent;
     color: #CBD5E1;
     font-size: 35px;
     line-height: 1;
-    cursor: pointer;
-    transition:
-        color 0.15s,
-        transform 0.15s;
 }
 
 .star-button.selected {
@@ -1107,11 +1089,6 @@ textarea:focus-visible {
 
 .star-button:hover {
     transform: scale(1.1);
-}
-
-.star-button:focus-visible {
-    border-radius: 6px;
-    outline: 2px solid var(--accent);
 }
 
 .rating-hint {
@@ -1126,8 +1103,6 @@ textarea:focus-visible {
     color: var(--green);
     font-weight: 600;
 }
-
-/* Коментар */
 
 .review-label {
     display: block;
@@ -1167,8 +1142,6 @@ textarea:focus-visible {
     margin-top: 14px;
 }
 
-/* Підтвердження коментаря */
-
 .review-saved-card {
     margin-bottom: 13px;
     text-align: center;
@@ -1176,8 +1149,8 @@ textarea:focus-visible {
 
 .review-saved-icon {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 44px;
     height: 44px;
     margin: 0 auto;
@@ -1189,7 +1162,6 @@ textarea:focus-visible {
 
 .review-saved-card h3 {
     margin-bottom: 8px;
-    color: var(--dark);
 }
 
 .review-saved-card p {
@@ -1210,8 +1182,8 @@ textarea:focus-visible {
 
 .receipt-mark {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 54px;
     height: 54px;
     margin: 0 auto 12px;
@@ -1219,13 +1191,12 @@ textarea:focus-visible {
     background: #EAF6EF;
     color: var(--green);
     font-size: 30px;
-    font-weight: bold;
 }
 
 .receipt-kicker {
     color: #B87516;
     font-size: 10px !important;
-    font-weight: bold;
+    font-weight: 700;
     letter-spacing: 1px;
 }
 
@@ -1237,14 +1208,13 @@ textarea:focus-visible {
 .receipt-subtitle {
     color: var(--muted);
     font-size: 12px !important;
-    line-height: 1.4;
 }
 
 .receipt-big-amount {
     margin: 18px 0;
     color: var(--dark);
     font-size: 28px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .receipt-separator {
@@ -1254,8 +1224,8 @@ textarea:focus-visible {
 
 .receipt-line {
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
+    justify-content: space-between;
     gap: 12px;
     margin: 13px 0;
     font-size: 11px;
@@ -1353,7 +1323,7 @@ textarea:focus-visible {
 
     .print-receipt hr {
         margin: 7mm 0;
-        border: 0;
+        border: none;
         border-top: 1px solid #AAA;
     }
 
