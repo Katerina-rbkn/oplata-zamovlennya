@@ -1,7 +1,10 @@
 
+// =====================================================
 // USE-CASE 3 — ОПЛАТА ЗАМОВЛЕННЯ
-// Сервіс виклику побутових майстрів
 // Демонстраційний прототип
+// =====================================================
+
+// 1. ЕКРАНИ
 
 const screens = {
     orders: document.getElementById("orders"),
@@ -14,15 +17,12 @@ const screens = {
     receipt: document.getElementById("receiptScreen")
 };
 
-
-
 const sidebarButtons = document.querySelectorAll(".step-button");
 
+const nextStepButton = document.getElementById("nextStep");
 const restartButton = document.getElementById("restartDemo");
 
-const nextStepButton = document.getElementById("nextStep");
-
-
+// 2. ВКЛАДКИ ЗАМОВЛЕНЬ
 
 const orderTabs = {
     active: document.getElementById("tabActive"),
@@ -35,8 +35,6 @@ const orderPanels = {
     completed: document.getElementById("completedOrders"),
     paid: document.getElementById("paidOrders")
 };
-
-
 
 const completedOrderCard =
     document.getElementById("completedOrderCard");
@@ -56,30 +54,31 @@ const orderPaymentStatus =
 const openPaymentButton =
     document.getElementById("openPayment");
 
+// 3. ПРОМОКОД
 
 const promoInput = document.getElementById("promoCode");
-
 const promoMessage = document.getElementById("promoMessage");
 
-const amountElements = [
-    document.getElementById("totalPrice"),
-    document.getElementById("widgetAmount"),
-    document.getElementById("processingAmount"),
-    document.getElementById("successAmount"),
-    document.getElementById("declinedAmount"),
-    document.getElementById("pendingAmount"),
-    document.getElementById("paidOrderAmount"),
-    document.getElementById("receiptAmount"),
-    document.getElementById("printReceiptAmount")
-];
+// 4. СУМИ
 
+const amountElements = [
+    "totalPrice",
+    "widgetAmount",
+    "processingAmount",
+    "successAmount",
+    "declinedAmount",
+    "pendingAmount",
+    "paidOrderAmount",
+    "receiptAmount",
+    "printReceiptAmount"
+].map(id => document.getElementById(id));
+
+// 5. ОЦІНЮВАННЯ МАЙСТРА
 
 const starButtons = document.querySelectorAll(".star-button");
 
 const ratingHint = document.getElementById("ratingHint");
-
 const reviewComment = document.getElementById("reviewComment");
-
 const reviewMessage = document.getElementById("reviewMessage");
 
 const submitReviewButton =
@@ -103,39 +102,30 @@ const successToOrdersButton =
 const successToReceiptButton =
     document.getElementById("successToReceipt");
 
+// 6. ЗМІННІ СТАНУ
 
-// Початкова вартість послуги
 const originalPrice = 550;
 
-// Поточна сума до сплати
 let currentPrice = originalPrice;
+let promoApplied = false;
 
-// Статус платежу:
 // unpaid, processing, pending, paid, declined
 let paymentStatus = "unpaid";
 
-// Дата успішної оплати
 let paymentDate = null;
 
-// Чи застосовано промокод
-let promoApplied = false;
-
-// Оцінка майстра від 0 до 5
 let selectedRating = 0;
-
-// Збережений відгук
 let savedReview = null;
-
-// Чи надіслано коментар
 let commentSubmitted = false;
 
+// =====================================================
+// 7. ПЕРЕВІРКА ОЦІНЮВАННЯ
+// =====================================================
 
-// Після успішної оплати потрібно поставити зірочки
 function isReviewRequired() {
     return paymentStatus === "paid" && selectedRating === 0;
 }
 
-// Перевірка ненадісланого коментаря
 function isCommentPending() {
     return (
         paymentStatus === "paid" &&
@@ -145,12 +135,10 @@ function isCommentPending() {
     );
 }
 
-// Чи можна залишити екран успішної оплати
 function isReviewNavigationBlocked() {
     return isReviewRequired() || isCommentPending();
 }
 
-// Повідомлення клієнту
 function showReviewRequiredMessage() {
 
     if (isReviewRequired()) {
@@ -164,17 +152,24 @@ function showReviewRequiredMessage() {
     } else if (isCommentPending()) {
 
         reviewMessage.textContent =
-            "Щоб зберегти коментар, натисніть " +
-            "«Надіслати коментар» або очистіть поле.";
+            "Надішліть написаний коментар " +
+            "або очистіть поле, щоб продовжити.";
 
         submitReviewButton.focus();
     }
 }
 
+// =====================================================
+// 8. ПЕРЕМИКАННЯ ЕКРАНІВ
+// =====================================================
+
 function showScreen(name, activeStep = name) {
 
-    // Не дозволяємо залишити успішну оплату,
-    // якщо не поставлено оцінку або не завершено коментар
+    if (!screens[name]) {
+        return;
+    }
+
+    // Після оплати не дозволяємо пропустити оцінювання
     if (
         isReviewNavigationBlocked() &&
         name !== "success"
@@ -183,15 +178,13 @@ function showScreen(name, activeStep = name) {
         return;
     }
 
-    // Приховуємо всі екрани
     Object.values(screens).forEach(screen => {
         screen.classList.remove("active");
     });
 
-    // Показуємо потрібний екран
     screens[name].classList.add("active");
 
-    // Виділяємо відповідний етап у лівій панелі
+    // Виділяємо відповідний етап у панелі демонстрації
     sidebarButtons.forEach(button => {
 
         const active = button.dataset.step === activeStep;
@@ -208,13 +201,17 @@ function showScreen(name, activeStep = name) {
         }
     });
 
-    // Прокручуємо новий екран догори
+    // Прокручування нового екрана догори
     const content = screens[name].querySelector(".content");
 
     if (content) {
         content.scrollTop = 0;
     }
 }
+
+// =====================================================
+// 9. ПЕРЕМИКАННЯ ВКЛАДОК ЗАМОВЛЕНЬ
+// =====================================================
 
 function showOrdersTab(name) {
 
@@ -236,6 +233,10 @@ function showOrdersTab(name) {
     });
 }
 
+// =====================================================
+// 10. ОНОВЛЕННЯ СУМ
+// =====================================================
+
 function updateAmounts() {
 
     const amount = `${currentPrice} грн`;
@@ -245,16 +246,19 @@ function updateAmounts() {
     });
 }
 
+// =====================================================
+// 11. СТАТУС ЗАМОВЛЕННЯ
+// =====================================================
+
 function updateOrderStatus() {
 
     const paid = paymentStatus === "paid";
 
-    // Після оплати прибираємо замовлення
-    // з вкладки "Виконані"
+    // Після оплати замовлення зникає з "Виконаних"
     completedOrderCard.hidden = paid;
     completedEmpty.hidden = !paid;
 
-    // І переносимо до вкладки "Оплачені"
+    // І з'являється в "Оплачених"
     paidOrderCard.hidden = !paid;
     paidEmpty.hidden = paid;
 
@@ -303,6 +307,9 @@ function updateOrderStatus() {
         isCommentPending();
 }
 
+// =====================================================
+// 12. ОНОВЛЕННЯ КВИТАНЦІЇ
+// =====================================================
 
 function updateReceipt() {
 
@@ -327,7 +334,7 @@ function updateReceipt() {
     document.getElementById("printReceiptDate").textContent =
         formattedDate;
 
-    // Відображення знижки
+    // Рядок знижки показується лише за наявності промокоду
     document.getElementById("receiptDiscountRow").hidden =
         !promoApplied;
 
@@ -346,13 +353,16 @@ function updateReceipt() {
     updateAmounts();
 }
 
+// =====================================================
+// 13. ПІДСВІЧУВАННЯ ЗІРОЧОК
+// =====================================================
+
 function updateRatingStars() {
 
     starButtons.forEach(button => {
 
         const value = Number(button.dataset.rating);
 
-        // Підсвічуємо всі зірочки до вибраної оцінки
         button.classList.toggle(
             "selected",
             value <= selectedRating
@@ -380,30 +390,32 @@ function updateRatingStars() {
     }
 }
 
+// =====================================================
+// 14. ДОСТУПНІСТЬ НАВІГАЦІЇ
+// =====================================================
 
 function updateReviewNavigation() {
 
     const blocked = isReviewNavigationBlocked();
 
     successToOrdersButton.disabled = blocked;
-
     successToReceiptButton.disabled = blocked;
 }
 
+// =====================================================
+// 15. ВІДОБРАЖЕННЯ ЗБЕРЕЖЕНОЇ ОЦІНКИ
+// =====================================================
 
 function updateReviewDisplay() {
 
     const hasRating = selectedRating > 0;
 
-    // Після надсилання коментаря
-    // показуємо картку подяки
+    // Після надсилання коментаря форма приховується
     reviewFormCard.hidden = commentSubmitted;
 
     reviewSavedCard.hidden = !commentSubmitted;
 
-    // Показуємо оцінку в оплаченому замовленні
     paidReviewSummary.hidden = !hasRating;
-
     paidReviewSummary.replaceChildren();
 
     if (hasRating) {
@@ -427,11 +439,8 @@ function updateReviewDisplay() {
             starsElement
         );
 
-        // Коментар відображається лише після надсилання
-        if (
-            savedReview &&
-            savedReview.comment
-        ) {
+        // Коментар відображається тільки після надсилання
+        if (savedReview && savedReview.comment) {
 
             const commentElement =
                 document.createElement("p");
@@ -442,9 +451,7 @@ function updateReviewDisplay() {
             commentElement.textContent =
                 `Коментар: ${savedReview.comment}`;
 
-            paidReviewSummary.appendChild(
-                commentElement
-            );
+            paidReviewSummary.appendChild(commentElement);
         }
 
         if (commentSubmitted) {
@@ -462,6 +469,9 @@ function updateReviewDisplay() {
     updateOrderStatus();
 }
 
+// =====================================================
+// 16. КНОПКА НАДСИЛАННЯ КОМЕНТАРЯ
+// =====================================================
 
 function updateCommentButton() {
 
@@ -474,6 +484,9 @@ function updateCommentButton() {
         commentSubmitted;
 }
 
+// =====================================================
+// 17. АВТОМАТИЧНЕ ЗБЕРЕЖЕННЯ ОЦІНКИ
+// =====================================================
 
 starButtons.forEach(button => {
 
@@ -486,10 +499,9 @@ starButtons.forEach(button => {
             return;
         }
 
-        // Отримуємо вибрану кількість зірочок
         selectedRating = Number(button.dataset.rating);
 
-        // Автоматично зберігаємо оцінку
+        // Оцінка зберігається одразу після натискання
         savedReview = {
             rating: selectedRating,
             comment: ""
@@ -503,18 +515,22 @@ starButtons.forEach(button => {
     });
 });
 
+// =====================================================
+// 18. ВВЕДЕННЯ КОМЕНТАРЯ
+// =====================================================
+
 reviewComment.addEventListener("input", () => {
 
     reviewMessage.textContent = "";
 
     updateCommentButton();
-
-    // Якщо коментар введений, його потрібно
-    // надіслати або очистити перед переходом
     updateReviewNavigation();
     updateOrderStatus();
 });
 
+// =====================================================
+// 19. НАДСИЛАННЯ КОМЕНТАРЯ
+// =====================================================
 
 submitReviewButton.addEventListener("click", () => {
 
@@ -532,30 +548,29 @@ submitReviewButton.addEventListener("click", () => {
         return;
     }
 
-    // Зберігаємо оцінку разом із коментарем
     savedReview = {
         rating: selectedRating,
         comment: comment
     };
 
     commentSubmitted = true;
-
     reviewMessage.textContent = "";
 
     updateReviewDisplay();
     updateCommentButton();
 });
 
+// =====================================================
+// 20. СКИДАННЯ ОЦІНЮВАННЯ
+// =====================================================
+
 function resetReview() {
 
     selectedRating = 0;
-
     savedReview = null;
-
     commentSubmitted = false;
 
     reviewComment.value = "";
-
     reviewMessage.textContent = "";
 
     updateRatingStars();
@@ -563,26 +578,30 @@ function resetReview() {
     updateCommentButton();
 }
 
+// =====================================================
+// 21. СКИДАННЯ ПЛАТЕЖУ
+// =====================================================
+
 function resetPaymentData() {
 
     paymentStatus = "unpaid";
-
     paymentDate = null;
 
     currentPrice = originalPrice;
-
     promoApplied = false;
 
     promoInput.value = "";
-
     promoMessage.textContent = "";
-
     promoMessage.className = "promo-message";
 
     resetReview();
     updateAmounts();
     updateOrderStatus();
 }
+
+// =====================================================
+// 22. ПЕРЕЗАПУСК ДЕМОНСТРАЦІЇ
+// =====================================================
 
 function restartDemo() {
 
@@ -592,16 +611,16 @@ function restartDemo() {
     }
 
     resetPaymentData();
-
     showOrdersTab("completed");
-
     showScreen("orders");
 }
 
+// =====================================================
+// 23. УСПІШНА ОПЛАТА
+// =====================================================
 
 function completePayment() {
 
-    // Дату записуємо лише один раз
     if (paymentStatus !== "paid") {
         paymentDate = new Date();
     }
@@ -616,27 +635,33 @@ function completePayment() {
     showScreen("success");
 }
 
+// =====================================================
+// 24. ВІДХИЛЕНИЙ ПЛАТІЖ
+// =====================================================
 
 function declinePayment() {
 
     paymentStatus = "declined";
 
     updateOrderStatus();
-
     showScreen("declined");
 }
 
+// =====================================================
+// 25. ОЧІКУВАННЯ ПІДТВЕРДЖЕННЯ
+// =====================================================
 
 function waitForConfirmation() {
 
     paymentStatus = "pending";
 
     updateOrderStatus();
-
     showScreen("pending");
 }
 
-
+// =====================================================
+// 26. ВІДКРИТТЯ КВИТАНЦІЇ
+// =====================================================
 
 function openReceipt() {
 
@@ -653,10 +678,12 @@ function openReceipt() {
     }
 
     updateReceipt();
-
     showScreen("receipt");
 }
 
+// =====================================================
+// 27. ВКЛАДКИ ЗАМОВЛЕНЬ
+// =====================================================
 
 orderTabs.active.addEventListener("click", () => {
     showOrdersTab("active");
@@ -670,6 +697,9 @@ orderTabs.paid.addEventListener("click", () => {
     showOrdersTab("paid");
 });
 
+// =====================================================
+// 28. КНОПКА ОПЛАТИ ЗАМОВЛЕННЯ
+// =====================================================
 
 openPaymentButton.addEventListener("click", () => {
 
@@ -691,17 +721,22 @@ openPaymentButton.addEventListener("click", () => {
     }
 });
 
+// =====================================================
+// 29. ПОВЕРНЕННЯ ДО ЗАЯВОК
+// =====================================================
 
 document.getElementById("backOrders").addEventListener(
     "click",
     () => {
 
         showOrdersTab("completed");
-
         showScreen("orders");
     }
 );
 
+// =====================================================
+// 30. ПРОМОКОД
+// =====================================================
 
 document.getElementById("applyPromo").addEventListener(
     "click",
@@ -727,7 +762,6 @@ document.getElementById("applyPromo").addEventListener(
         } else {
 
             promoApplied = false;
-
             currentPrice = originalPrice;
 
             promoMessage.textContent =
@@ -741,20 +775,21 @@ document.getElementById("applyPromo").addEventListener(
     }
 );
 
-
+// Якщо промокод змінено, попередня знижка скидається
 promoInput.addEventListener("input", () => {
 
     promoApplied = false;
-
     currentPrice = originalPrice;
 
     promoMessage.textContent = "";
-
     promoMessage.className = "promo-message";
 
     updateAmounts();
 });
 
+// =====================================================
+// 31. ПЕРЕХІД ДО LIQPAY
+// =====================================================
 
 document.getElementById("goToLiqPay").addEventListener(
     "click",
@@ -768,20 +803,19 @@ document.getElementById("goToLiqPay").addEventListener(
         }
 
         updateAmounts();
-
         showScreen("widget");
     }
 );
 
+// Повернення з віджета
 document.getElementById("backFromWidget").addEventListener(
     "click",
     () => {
-
         showScreen("details");
     }
 );
 
-
+// Скасування платежу
 document.getElementById("cancelWidget").addEventListener(
     "click",
     () => {
@@ -789,11 +823,13 @@ document.getElementById("cancelWidget").addEventListener(
         paymentStatus = "unpaid";
 
         updateOrderStatus();
-
         showScreen("details");
     }
 );
 
+// =====================================================
+// 32. ПІДТВЕРДЖЕННЯ ТЕСТОВОЇ ОПЛАТИ
+// =====================================================
 
 document.getElementById(
     "confirmWidgetPayment"
@@ -809,10 +845,12 @@ document.getElementById(
     paymentStatus = "processing";
 
     updateOrderStatus();
-
     showScreen("processing");
 });
 
+// =====================================================
+// 33. ДЕМОНСТРАЦІЯ РЕЗУЛЬТАТІВ ПЛАТЕЖУ
+// =====================================================
 
 document.getElementById(
     "simulateSuccess"
@@ -826,6 +864,9 @@ document.getElementById(
     "simulatePending"
 ).addEventListener("click", waitForConfirmation);
 
+// =====================================================
+// 34. ПОВТОРНА ОПЛАТА
+// =====================================================
 
 document.getElementById("retryPayment").addEventListener(
     "click",
@@ -838,21 +879,22 @@ document.getElementById("retryPayment").addEventListener(
         paymentStatus = "unpaid";
 
         updateOrderStatus();
-
         showScreen("widget");
     }
 );
 
-
+// Повернення після відхиленого платежу
 document.getElementById(
     "declinedToOrders"
 ).addEventListener("click", () => {
 
     showOrdersTab("completed");
-
     showScreen("orders");
 });
 
+// =====================================================
+// 35. ПЕРЕХІД ДО ОПЛАЧЕНИХ ЗАМОВЛЕНЬ
+// =====================================================
 
 successToOrdersButton.addEventListener("click", () => {
 
@@ -862,11 +904,10 @@ successToOrdersButton.addEventListener("click", () => {
     }
 
     showOrdersTab("paid");
-
     showScreen("orders");
 });
 
-
+// Перегляд оплаченого замовлення
 document.getElementById(
     "viewPaidPayment"
 ).addEventListener("click", () => {
@@ -876,6 +917,7 @@ document.getElementById(
     }
 });
 
+// Перехід із порожньої вкладки "Виконані"
 document.getElementById(
     "emptyGoToPaid"
 ).addEventListener("click", () => {
@@ -883,6 +925,9 @@ document.getElementById(
     showOrdersTab("paid");
 });
 
+// =====================================================
+// 36. ПІДТВЕРДЖЕННЯ ПЛАТЕЖУ ПІСЛЯ ОЧІКУВАННЯ
+// =====================================================
 
 document.getElementById(
     "simulateConfirmation"
@@ -893,15 +938,18 @@ document.getElementById(
     }
 });
 
-
+// Повернення під час очікування
 document.getElementById(
     "pendingToOrders"
 ).addEventListener("click", () => {
 
     showOrdersTab("completed");
-
     showScreen("orders");
 });
+
+// =====================================================
+// 37. КНОПКИ КВИТАНЦІЇ
+// =====================================================
 
 document.getElementById(
     "openReceipt"
@@ -912,12 +960,12 @@ successToReceiptButton.addEventListener(
     openReceipt
 );
 
+// Повернення з квитанції
 document.getElementById(
     "backFromReceipt"
 ).addEventListener("click", () => {
 
     showOrdersTab("paid");
-
     showScreen("orders");
 });
 
@@ -926,9 +974,12 @@ document.getElementById(
 ).addEventListener("click", () => {
 
     showOrdersTab("paid");
-
     showScreen("orders");
 });
+
+// =====================================================
+// 38. ДРУК КВИТАНЦІЇ
+// =====================================================
 
 document.getElementById(
     "printReceipt"
@@ -936,15 +987,19 @@ document.getElementById(
 
     if (
         paymentStatus === "paid" &&
-        selectedRating > 0
+        selectedRating > 0 &&
+        !isCommentPending()
     ) {
         window.print();
     }
 });
 
+// =====================================================
+// 39. НАВІГАЦІЯ ЧЕРЕЗ ПАНЕЛЬ ДЕМОНСТРАЦІЇ
+// =====================================================
+
 function navigateDemo(step) {
 
-    // Після успішної оплати спочатку потрібна оцінка
     if (isReviewNavigationBlocked()) {
         showReviewRequiredMessage();
         return;
@@ -965,13 +1020,11 @@ function navigateDemo(step) {
         step === "promo"
     ) {
 
-        // Новий демонстраційний платіж
         if (paymentStatus !== "unpaid") {
             resetPaymentData();
         }
 
         showOrdersTab("completed");
-
         showScreen("details", step);
 
         if (step === "promo") {
@@ -985,7 +1038,6 @@ function navigateDemo(step) {
         }
 
         showOrdersTab("completed");
-
         showScreen("widget");
 
     } else if (step === "processing") {
@@ -997,9 +1049,7 @@ function navigateDemo(step) {
         paymentStatus = "processing";
 
         updateOrderStatus();
-
         showOrdersTab("completed");
-
         showScreen("processing");
 
     } else if (step === "success") {
@@ -1028,16 +1078,21 @@ function navigateDemo(step) {
     }
 }
 
+// =====================================================
+// 40. КНОПКИ ЕТАПІВ У ЛІВІЙ ПАНЕЛІ
+// =====================================================
+
 sidebarButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        const step = button.dataset.step;
-
-        navigateDemo(step);
+        navigateDemo(button.dataset.step);
     });
 });
 
+// =====================================================
+// 41. КНОПКА "ДАЛІ ЗА СЦЕНАРІЄМ"
+// =====================================================
 
 const mainScenarioSteps = [
     "orders",
@@ -1056,7 +1111,6 @@ nextStepButton.addEventListener("click", () => {
         return;
     }
 
-    // Знаходимо активний етап
     const currentButton = document.querySelector(
         ".screens li.current .step-button"
     );
@@ -1068,38 +1122,41 @@ nextStepButton.addEventListener("click", () => {
     const currentIndex =
         mainScenarioSteps.indexOf(currentStep);
 
-    // Якщо зараз альтернативний сценарій,
-    // переходимо до основного сценарію
+    // З альтернативного сценарію повертаємося на початок
     if (currentIndex === -1) {
         navigateDemo("orders");
         return;
     }
 
-    // Якщо це останній етап,
-    // повертаємося до оплачених замовлень
+    // Після квитанції показуємо оплачені замовлення
     if (
         currentIndex ===
         mainScenarioSteps.length - 1
     ) {
 
         showOrdersTab("paid");
-
         showScreen("orders");
 
         return;
     }
 
-    // Наступний етап основного сценарію
     const nextStep =
         mainScenarioSteps[currentIndex + 1];
 
     navigateDemo(nextStep);
 });
 
+// =====================================================
+// 42. ПЕРЕЗАПУСК
+// =====================================================
 
 restartButton.addEventListener(
     "click",
     restartDemo
 );
+
+// =====================================================
+// 43. ПОЧАТКОВИЙ СТАН ПРОТОТИПУ
+// =====================================================
 
 restartDemo();
