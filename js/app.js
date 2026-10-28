@@ -81,7 +81,6 @@ const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
 ).matches;
 
-// Тривалість переходу — 340 мс, як у дівчат
 const DURATION = reducedMotion ? 0 : 340;
 
 // Плавність анімації
